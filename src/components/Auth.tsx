@@ -2,9 +2,12 @@
 
 import Input from '@/components/Input';
 import Image from 'next/image';
-import { useCallback, useState } from 'react';
+import { FormEvent, useCallback, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 
 export default function Auth() {
+  const router = useRouter();
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -16,6 +19,62 @@ export default function Auth() {
       currentVariant === 'login' ? 'register' : 'login',
     );
   }, []);
+
+  /**
+   * 로그인 처리
+   */
+  const login = useCallback(async () => {
+    console.log('login...');
+    try {
+      const response = await signIn('credentials', {
+        redirect: false,
+        email,
+        password,
+        callbackUrl: '/',
+      });
+
+      if (response?.error) {
+        console.log(response.error);
+        return;
+      }
+
+      // 로그인 성공 시 메인 페이지로 이동
+      router.replace('/');
+    } catch (error) {
+      console.log('로그인 실패');
+    }
+  }, [email, password, router]);
+
+  /**
+   * 회원가입 처리
+   */
+  const register = useCallback(async () => {
+    console.log('registering...');
+
+    try {
+      await fetch('/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          email,
+          password,
+        }),
+      });
+
+      login();
+    } catch (error) {
+      console.log('회원가입 실패');
+    }
+  }, [email, login, password, username]);
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (variant === 'login') login();
+    else register();
+  };
 
   return (
     <>
@@ -31,18 +90,23 @@ export default function Auth() {
         </nav>
 
         <div className="flex justify-center">
-          <div className="mt-2 w-full self-center rounded-md bg-black/70 p-16 lg:w-2/5 lg:max-w-md ">
+          <form
+            onSubmit={handleSubmit}
+            className="mt-2 w-full self-center rounded-md bg-black/70 p-16 lg:w-2/5 lg:max-w-md "
+          >
             <h2 className="mb-8 select-none text-4xl font-semibold text-white">
               {variant === 'login' ? '로그인' : '회원가입'}
             </h2>
             <div className="flex flex-col gap-4">
-              <Input
-                id="username"
-                label="이름"
-                onChange={(e) => setUsername(e.target.value)}
-                value={username}
-                type="text"
-              />
+              {variant === 'register' && (
+                <Input
+                  id="username"
+                  label="이름"
+                  onChange={(e) => setUsername(e.target.value)}
+                  value={username}
+                  type="text"
+                />
+              )}
               <Input
                 id="email"
                 label="이메일"
@@ -60,11 +124,7 @@ export default function Auth() {
             </div>
 
             <button
-              onClick={
-                variant === 'login'
-                  ? () => alert('로그인')
-                  : () => alert('회원가입')
-              }
+              type="submit"
               className="mt-10 w-full rounded-md bg-red-600 py-3 text-white transition hover:bg-red-700"
             >
               {variant === 'login' ? '로그인' : '회원가입'}
@@ -84,7 +144,7 @@ export default function Auth() {
               </span>
               .
             </p>
-          </div>
+          </form>
         </div>
       </div>
     </>
