@@ -9,7 +9,14 @@ module.exports = {
     './src/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        pretendard: ['var(--font-pretendard)'],
+      },
+      gridTemplateColumns: {
+        fluid: 'repeat(auto-fit, minmax(20rem, 1fr))',
+      },
+    },
   },
   plugins: [],
 };
