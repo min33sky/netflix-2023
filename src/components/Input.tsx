@@ -1,11 +1,11 @@
 import React from 'react';
 
 interface Props {
-  id: string;
+  id: 'username' | 'email' | 'password';
+  label: '이름' | '이메일' | '비밀번호';
+  type?: 'text' | 'email' | 'password';
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   value: string;
-  label: string;
-  type?: string;
 }
 
 export default function Input({
@@ -20,6 +20,8 @@ export default function Input({
       <input
         type={type}
         id={id}
+        onChange={onChange}
+        value={value}
         className="block rounded-md px-6 pt-6 pb-2 w-full text-white bg-neutral-700 peer outline-none appearance-none"
         placeholder=" "
       />
