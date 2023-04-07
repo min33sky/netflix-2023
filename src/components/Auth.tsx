@@ -5,6 +5,8 @@ import Image from 'next/image';
 import { FormEvent, useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
+import { FcGoogle } from 'react-icons/fc';
+import { FaGithub } from 'react-icons/fa';
 
 export default function Auth() {
   const router = useRouter();
@@ -89,11 +91,8 @@ export default function Auth() {
           />
         </nav>
 
-        <div className="flex justify-center">
-          <form
-            onSubmit={handleSubmit}
-            className="mt-2 w-full self-center rounded-md bg-black/70 p-16 lg:w-2/5 lg:max-w-md "
-          >
+        <div className="mx-auto flex w-full flex-col justify-center self-center rounded-md bg-black/50 p-16  lg:w-2/5 lg:max-w-md">
+          <form onSubmit={handleSubmit} className="mt-2  ">
             <h2 className="mb-8 select-none text-4xl font-semibold text-white">
               {variant === 'login' ? '로그인' : '회원가입'}
             </h2>
@@ -129,22 +128,46 @@ export default function Auth() {
             >
               {variant === 'login' ? '로그인' : '회원가입'}
             </button>
-
-            <div>{/* TODO: OAUTH */}</div>
-
-            <p className="mt-12 text-neutral-500">
-              {variant === 'login'
-                ? '처음 방문하셨나요?'
-                : '이미 계정이 있으신가요?'}
-              <span
-                onClick={toggleVariant}
-                className="ml-2 cursor-pointer text-white hover:underline"
-              >
-                {variant === 'login' ? '새 계정 만들기' : '로그인하기'}
-              </span>
-              .
-            </p>
           </form>
+
+          <div className="mt-8 flex items-center justify-center gap-4">
+            <button
+              onClick={() =>
+                signIn('google', {
+                  callbackUrl: '/',
+                })
+              }
+              title="Google 로그인"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-white transition hover:opacity-80"
+            >
+              <FcGoogle size={32} />
+            </button>
+
+            <button
+              onClick={() =>
+                signIn('github', {
+                  callbackUrl: '/',
+                })
+              }
+              title="Github 로그인"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-white transition hover:opacity-80"
+            >
+              <FaGithub size={32} />
+            </button>
+          </div>
+
+          <p className="mt-12 text-neutral-500">
+            {variant === 'login'
+              ? '처음 방문하셨나요?'
+              : '이미 계정이 있으신가요?'}
+            <span
+              onClick={toggleVariant}
+              className="ml-2 cursor-pointer text-white hover:underline"
+            >
+              {variant === 'login' ? '새 계정 만들기' : '로그인하기'}
+            </span>
+            .
+          </p>
         </div>
       </div>
     </>

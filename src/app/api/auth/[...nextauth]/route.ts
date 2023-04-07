@@ -4,17 +4,20 @@ import Credentials from 'next-auth/providers/credentials';
 import GithubProvider from 'next-auth/providers/github';
 import { prisma } from '@/lib/prisma_db';
 import { compare } from 'bcrypt';
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
 
 export const authOptions: NextAuthOptions = {
   providers: [
-    // GithubProvider({
-    //   clientId: process.env.GITHUB_ID || '',
-    //   clientSecret: process.env.GITHUB_SECRET || '',
-    // }),
-    // GoogleProvider({
-    //   clientId: process.env.GOOGLE_OAUTH_ID || '',
-    //   clientSecret: process.env.GOOGLE_OAUTH_SECRET || '',
-    // }),
+    GithubProvider({
+      clientId: process.env.GITHUB_ID || '',
+      clientSecret: process.env.GITHUB_SECRET || '',
+    }),
+
+    GoogleProvider({
+      clientId: process.env.GOOGLE_OAUTH_ID || '',
+      clientSecret: process.env.GOOGLE_OAUTH_SECRET || '',
+      checks: 'none', //? 이거 없으면 에러남 (https://github.com/nextauthjs/next-auth/issues/4190#issuecomment-1124265297)
+    }),
 
     Credentials({
       id: 'credentials',
@@ -67,7 +70,8 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: 'jwt',
   },
-  // secret: process.env.NEXTAUTH_SECRET, //? 환경변수에 NEXTAUTH_SECRET만 설정해주면 자동으로 됨
+  adapter: PrismaAdapter(prisma),
+  secret: process.env.NEXTAUTH_SECRET, //? 환경변수에 NEXTAUTH_SECRET만 설정해주면 자동으로 됨
 };
 
 const handler = NextAuth(authOptions);
