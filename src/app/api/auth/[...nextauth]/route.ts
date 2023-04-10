@@ -63,6 +63,17 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+  callbacks: {
+    session({ session, token }) {
+      console.log('Session Callback: ', { session, token });
+
+      // https://next-auth.js.org/getting-started/typescript#extend-default-interface-properties
+      session.user.id = token.sub!;
+
+      return session;
+    },
+  },
+
   pages: {
     signIn: '/auth',
   },

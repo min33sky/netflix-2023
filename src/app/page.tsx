@@ -39,8 +39,6 @@ export default async function Home() {
 
   const trendingMovies = await getTrendingMovies();
 
-  console.log('movies: ', trendingMovies);
-
   return (
     <main className="">
       <Navbar />
