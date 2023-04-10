@@ -3,25 +3,50 @@ import { authOptions } from './api/auth/[...nextauth]/route';
 import { redirect } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Billboard from '@/components/Billboard';
+import MovieList from '@/components/MovieList';
+import { Movie } from '@prisma/client';
+import { cookies } from 'next/headers';
+
+async function getTrendingMovies() {
+  /**
+   *? 서버에서 요청을 보낼 때는 쿠키를 같이 보내야 한다. (next-auth 인증에 필요함)
+   */
+  const nextCookies = cookies();
+
+  // key/value 배열 형태로 되어 있으므로 reduce를 사용해서 문자열로 만든다.
+  const cookie = nextCookies.getAll().reduce((acc, cur) => {
+    return `${acc}${cur.name}=${cur.value}; `;
+  }, '');
+
+  const response = await fetch(`${process.env.BASE_URL}/api/movies`, {
+    headers: {
+      'Content-Type': 'application/json',
+      cookie,
+    },
+  });
+
+  const data: Movie[] = await response.json();
+
+  return data;
+}
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
-
-  console.log(session);
 
   if (!session) {
     return redirect('/auth');
   }
 
-  console.log('## 현재 접속한 사용자 : ', session.user);
+  const trendingMovies = await getTrendingMovies();
+
+  console.log('movies: ', trendingMovies);
 
   return (
     <main className="">
       <Navbar />
-      {/* <LogoutButton /> */}
       <Billboard />
-      <div className="h-[2000px]">
-        <p className="sr-only">스크롤 테스트용 지울꺼임</p>
+      <div className="pb-40">
+        <MovieList title="지금 유행하는" movies={trendingMovies} />
       </div>
     </main>
   );
