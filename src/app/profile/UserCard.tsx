@@ -13,8 +13,10 @@ interface Props {
 }
 
 export default function UserCard({ name }: Props) {
-  //? 랜덤으로 색상 호출 시 경고 발생한다. (클라이언트와 서버의 랜덤값이 다름)
-  //? 그래서 색상을 지정하는 방식으로 변경 (dynamic import를 사용해도 되는데 깜박임 거슬림)
+  /**
+   *? 랜덤으로 색상 호출 시 경고 발생한다. (클라이언트와 서버의 랜덤값이 다름)
+   *? 그래서 색상을 지정하는 방식으로 변경 (dynamic import를 사용해도 되는데 깜박임 거슬림)
+   */
   const imgSrc = images[(name || '사용자').length % images.length];
 
   return (
