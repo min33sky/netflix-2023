@@ -16,7 +16,7 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_OAUTH_ID || '',
       clientSecret: process.env.GOOGLE_OAUTH_SECRET || '',
-      checks: 'none', //? 이거 없으면 에러남 (https://github.com/nextauthjs/next-auth/issues/4190#issuecomment-1124265297)
+      checks: 'none', //! 이거 없으면 에러남 (https://github.com/nextauthjs/next-auth/issues/4190#issuecomment-1124265297)
     }),
 
     Credentials({
