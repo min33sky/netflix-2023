@@ -45,6 +45,7 @@ export default async function Home() {
       <Billboard />
       <div className="pb-40">
         <MovieList title="지금 유행하는" movies={trendingMovies} />
+        <MovieList title="내가 찜한 컨텐츠" />
       </div>
     </main>
   );

@@ -5,6 +5,7 @@ import { Movie } from '@prisma/client';
 import React from 'react';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import { PlayIcon } from '@heroicons/react/24/solid';
+import FavoriteButton from './FavoriteButton';
 
 interface Props {
   movie: Movie;
@@ -89,7 +90,7 @@ export default function MovieCard({
             >
               <PlayIcon className="w-4 text-black lg:w-6" />
             </div>
-            {/* <FavoriteButton movieId={id} /> */}
+            <FavoriteButton movieId={id} />
             <div
               onClick={() => {}}
               className="group/item ml-auto flex h-6 w-6 cursor-pointer items-center justify-center rounded-full border-2 border-white transition hover:border-neutral-300 lg:h-10 lg:w-10"
