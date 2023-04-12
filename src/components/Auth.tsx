@@ -31,16 +31,14 @@ export default function Auth() {
         redirect: false,
         email,
         password,
-        callbackUrl: '/',
+        callbackUrl: '/profile',
       });
 
       if (response?.error) {
         console.log(response.error);
         return;
       }
-
-      // 로그인 성공 시 메인 페이지로 이동
-      router.replace('/');
+      router.replace('/profile');
     } catch (error) {}
   }, [email, password, router]);
 
@@ -129,7 +127,7 @@ export default function Auth() {
             <button
               onClick={() =>
                 signIn('google', {
-                  callbackUrl: '/',
+                  callbackUrl: '/profile',
                 })
               }
               title="Google 로그인"
@@ -141,7 +139,7 @@ export default function Auth() {
             <button
               onClick={() =>
                 signIn('github', {
-                  callbackUrl: '/',
+                  callbackUrl: '/profile',
                 })
               }
               title="Github 로그인"
