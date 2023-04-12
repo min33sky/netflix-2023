@@ -11,9 +11,9 @@ export default function ModalWrapper({ children }: Props) {
   const { isOpen, closeModal } = useInfoModalStore();
 
   return (
-    <div>
+    <>
       <InfoModal visible={isOpen} onClose={closeModal} />
       {children}
-    </div>
+    </>
   );
 }
