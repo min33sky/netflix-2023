@@ -28,8 +28,6 @@ export async function GET(
       return NextResponse.json({ error: 'Movie not found' }, { status: 404 });
     }
 
-    console.log('##### movie', movie);
-
     return NextResponse.json(movie);
   } catch (error) {
     return NextResponse.json(

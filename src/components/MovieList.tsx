@@ -13,8 +13,6 @@ interface Props {
 export default function MovieList({ title, movies }: Props) {
   const { data: favoriteMovies } = useFavorites();
 
-  console.log('좋아요 누른 영화: ', favoriteMovies);
-
   return (
     <article className="mt-4 space-y-8 px-4 md:px-12">
       <div>

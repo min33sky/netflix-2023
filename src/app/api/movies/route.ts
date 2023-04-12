@@ -6,8 +6,6 @@ import { prisma } from '@/lib/prisma_db';
 export async function GET(request: Request) {
   const session = await getServerSession(authOptions);
 
-  console.log('####### 무비 세션: ', session);
-
   if (!session) {
     return NextResponse.json(
       {

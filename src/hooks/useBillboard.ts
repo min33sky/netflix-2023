@@ -1,9 +1,10 @@
 'use client';
 
+import { Movie } from '@prisma/client';
 import useSWR from 'swr';
 
 export default function useBillboard() {
-  const { data, error, isLoading } = useSWR(
+  const { data, error, isLoading } = useSWR<Movie>(
     '/api/random',
     () => fetch('/api/random').then((res) => res.json()),
     {

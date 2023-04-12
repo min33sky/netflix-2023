@@ -3,6 +3,7 @@ import LocalFont from 'next/font/local';
 import { authOptions } from './api/auth/[...nextauth]/route';
 import SessionWrapper from '@/lib/SessionWrapper';
 import { getServerSession } from 'next-auth/next';
+import ModalWrapper from '@/lib/ModalWrapper';
 
 export const metadata = {
   title: 'Neflix Clone',
@@ -39,7 +40,9 @@ export default async function RootLayout({
       <body
         className={`h-full overflow-x-hidden bg-zinc-900 font-pretendard ${pretendard.variable}`}
       >
-        <SessionWrapper session={session}>{children}</SessionWrapper>
+        <SessionWrapper session={session}>
+          <ModalWrapper>{children}</ModalWrapper>
+        </SessionWrapper>
       </body>
     </html>
   );

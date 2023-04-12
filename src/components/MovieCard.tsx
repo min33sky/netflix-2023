@@ -2,10 +2,12 @@
 'use client';
 
 import { Movie } from '@prisma/client';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import { PlayIcon } from '@heroicons/react/24/solid';
 import FavoriteButton from './FavoriteButton';
+import { useRouter } from 'next/navigation';
+import useInfoModalStore from '@/hooks/useInfoModalStore';
 
 interface Props {
   movie: Movie;
@@ -14,10 +16,17 @@ interface Props {
 export default function MovieCard({
   movie: { id, title, description, duration, genre, thumbnailUrl, videoUrl },
 }: Props) {
+  const router = useRouter();
+  const { openModal } = useInfoModalStore();
+
+  const redirectToMatch = useCallback(() => {
+    router.push(`/watch/${id}`);
+  }, [id, router]);
+
   return (
     <article className="col-span group relative h-[12vw] bg-zinc-900">
       <img
-        onClick={() => {}}
+        onClick={redirectToMatch}
         src={thumbnailUrl}
         alt="Movie"
         draggable={false}
@@ -55,7 +64,7 @@ export default function MovieCard({
         "
       >
         <img
-          onClick={() => {}}
+          onClick={redirectToMatch}
           src={thumbnailUrl}
           alt="Movie"
           draggable={false}
@@ -85,14 +94,14 @@ export default function MovieCard({
         >
           <div className="flex flex-row items-center gap-3">
             <div
-              onClick={() => {}}
+              onClick={redirectToMatch}
               className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-white transition hover:bg-neutral-300 lg:h-10 lg:w-10"
             >
               <PlayIcon className="w-4 text-black lg:w-6" />
             </div>
             <FavoriteButton movieId={id} />
             <div
-              onClick={() => {}}
+              onClick={() => openModal(id)}
               className="group/item ml-auto flex h-6 w-6 cursor-pointer items-center justify-center rounded-full border-2 border-white transition hover:border-neutral-300 lg:h-10 lg:w-10"
             >
               <ChevronDownIcon className="w-4 text-white group-hover/item:text-neutral-300 lg:w-6" />

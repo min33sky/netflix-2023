@@ -1,12 +1,23 @@
 'use client';
 
 import useBillboard from '@/hooks/useBillboard';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import PlayButton from './PlayButton';
+import useInfoModalStore from '@/hooks/useInfoModalStore';
 
 export default function Billboard() {
   const { data } = useBillboard();
+
+  const { openModal } = useInfoModalStore();
+
+  const handleModalOpen = useCallback(() => {
+    if (data) {
+      openModal(data?.id);
+    } else {
+      alert('영화 정보가 없습니다.');
+    }
+  }, [data, openModal]);
 
   return (
     <div className="relative h-[56.25vw]">
@@ -27,9 +38,9 @@ export default function Billboard() {
         </p>
 
         <div className="mt-3 flex items-center gap-3 md:mt-4">
-          <PlayButton movieId={data?.id} />
+          <PlayButton movieId={data?.id || 'movie_id_none'} />
           <button
-            onClick={() => alert('준비중')}
+            onClick={handleModalOpen}
             className="
               flex w-auto items-center
               rounded-md bg-white

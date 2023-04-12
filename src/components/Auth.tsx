@@ -26,7 +26,6 @@ export default function Auth() {
    * 로그인 처리
    */
   const login = useCallback(async () => {
-    console.log('login...');
     try {
       const response = await signIn('credentials', {
         redirect: false,
@@ -42,17 +41,13 @@ export default function Auth() {
 
       // 로그인 성공 시 메인 페이지로 이동
       router.replace('/');
-    } catch (error) {
-      console.log('로그인 실패');
-    }
+    } catch (error) {}
   }, [email, password, router]);
 
   /**
    * 회원가입 처리
    */
   const register = useCallback(async () => {
-    console.log('registering...');
-
     try {
       await fetch('/api/register', {
         method: 'POST',
